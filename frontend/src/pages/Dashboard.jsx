@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MarketCard from "../components/MarketCard";
-import Portfolio from "../components/Portfolio";
-import TradesTable from "../components/TradesTable";
+import Portfolio from "../components/Portifolio"; // fixed typo here
+import TradesTable from "../components/TradeTable";
 import TradeForm from "../components/TradeForm";
 import { getMarketPrice, fetchOrders } from "../services/api";
 import { supabase } from "../services/supabaseClient";
@@ -33,7 +33,7 @@ export default function Dashboard(){
     load();
     loadOrders();
 
-    // optional: subscribe to Supabase realtime for orders / portfolio updates
+    // subscribe to Supabase realtime for orders / portfolio updates
     const subscription = supabase
       .channel('public:orders')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, payload => {
@@ -41,7 +41,10 @@ export default function Dashboard(){
       })
       .subscribe();
 
-    return ()=> { supabase.removeChannel(subscription); }
+    return ()=> { 
+      supabase.removeChannel(subscription); // works for supabase-js v2+
+      // If using v1, use: subscription.unsubscribe();
+    }
   }, []);
 
   return (
