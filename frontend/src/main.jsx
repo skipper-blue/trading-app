@@ -5,9 +5,14 @@ import App from "./App";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import "./index.css"; // Tailwind import - create with postcss
+import "./index.css"; // Tailwind import
 
-createRoot(document.getElementById("root")).render(
+const rootEl = document.getElementById("root");
+if (!rootEl) {
+  throw new Error("Root element #root not found in index.html");
+}
+
+createRoot(rootEl).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
@@ -15,6 +20,8 @@ createRoot(document.getElementById("root")).render(
           <Route index element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="dashboard" element={<Dashboard />} />
+          {/* Optional: fallback for unknown routes */}
+          <Route path="*" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>
